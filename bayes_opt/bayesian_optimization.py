@@ -64,9 +64,12 @@ class Observable(object):
 
 
 class BayesianOptimization(Observable):
-    def __init__(self, f, pbounds, random_state=None, verbose=2):
+    def __init__(self, f, pbounds, random_state=None, verbose=2, n_warmup=50000, n_iter=100, do_opt=True):
         """"""
         self._random_state = ensure_rng(random_state)
+        self._n_warmup = n_warmup
+        self._n_iter = n_iter
+        self._do_opt = do_opt
 
         # Data structure containing the function to be optimized, the bounds of
         # its domain, and a record of the evaluations we have done so far
@@ -113,6 +116,7 @@ class BayesianOptimization(Observable):
             self.dispatch(Events.OPTMIZATION_STEP)
 
     def suggest(self, utility_function):
+                
         """Most promissing point to probe next"""
         if len(self._space) == 0:
             return self._space.array_to_params(self._space.random_sample())
@@ -129,7 +133,10 @@ class BayesianOptimization(Observable):
             gp=self._gp,
             y_max=self._space.target.max(),
             bounds=self._space.bounds,
-            random_state=self._random_state
+            random_state=self._random_state,
+            n_warmup=self._n_warmup,
+            n_iter=self._n_iter,
+            do_opt=self._do_opt
         )
 
         return self._space.array_to_params(suggestion)
