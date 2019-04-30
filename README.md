@@ -269,7 +269,7 @@ For the latest release, run:
 
 The bleeding edge version can be installed with:
 
-    pip install git+https://github.com/fmfn/BayesianOptimization.git
+    pip install git+https://github.com/Golbstein/BayesianOptimization.git
 
 If you prefer, you can clone it and run the setup.py file. Use the following
 commands to get a copy from Github and install all dependencies:
